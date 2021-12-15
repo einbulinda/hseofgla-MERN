@@ -30,7 +30,7 @@ export const registerUser = asyncHandler(async (req, res) => {
       email: newUser.email,
       isAdmin: newUser.isAdmin,
       photo: newUser.photo,
-      // token: generateToken(newUser._id),
+      token: generateToken(newUser._id),
     });
   } else {
     res.status(400);
@@ -53,7 +53,7 @@ export const authUser = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       photo: user.photo,
-      // token: generateToken(user._id),
+      token: generateToken(user._id),
     });
   } else {
     res.status(401);
