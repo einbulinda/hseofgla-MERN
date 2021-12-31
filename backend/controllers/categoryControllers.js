@@ -52,7 +52,7 @@ export const getCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   try {
-    const category = await Category.findById(id);
+    const category = await Category.findById(id).sort({ updatedAt: "desc" });
     res.status(200).json(category);
   } catch (error) {
     res.status(404).json({ message: error.message });

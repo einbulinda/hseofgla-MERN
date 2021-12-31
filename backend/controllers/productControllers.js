@@ -1,12 +1,64 @@
-import express from "express";
-import mongoose from "mongoose";
+import asyncHandler from "express-async-handler";
 
 import ProductModel from "../models/productModels.js";
+
+// Create a Product
+export const createProduct = asyncHandler(async (req, res) => {
+  const {
+    name,
+    category,
+    brand,
+    cost,
+    discount,
+    image,
+    price,
+    qty,
+    description,
+  } = req.body;
+
+  // Check if product exists
+  const productExists = await ProductModel.findOne({ name });
+  if (productExists) {
+    res.status(400);
+    throw new Error("The product name is already existing.");
+  }
+
+  // Save Product
+  const newProduct = await ProductModel.create({
+    name,
+    category,
+    brand,
+    cost,
+    discount,
+    image,
+    price,
+    qty,
+    description,
+  });
+
+  if (newProduct) {
+    res.status(201).json({
+      _id: newProduct._id,
+      name: newProduct.name,
+      category: newProduct.category,
+      brand: newProduct.brand,
+      cost: newProduct.cost,
+      discount: newProduct.discount,
+      price: newProduct.price,
+      image: newProduct.image,
+      qty: newProduct.qty,
+      description: newProduct.description,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Error was encountered in saving the product");
+  }
+});
 
 // Get All Products
 export const getProducts = async (req, res) => {
   try {
-    const products = await ProductModel.find();
+    const products = await ProductModel.find().sort({ updatedAt: "desc" });
     res.status(200).json(products);
   } catch (error) {
     res.status(404).json({ message: error.message });
