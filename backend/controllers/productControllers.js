@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-
+import mongoose from "mongoose";
 import ProductModel from "../models/productModels.js";
 
 // Create a Product
@@ -77,4 +77,37 @@ export const getProduct = async (req, res) => {
   }
 };
 
-// Create a Product
+// Update a Product
+export const updateProduct = asyncHandler(async (req, res) => {
+  const {
+    _id,
+    name,
+    brand,
+    category,
+    cost,
+    price,
+    discount,
+    qty,
+    description,
+    image,
+  } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send(`No product found with ID ${_id}`);
+
+  const updatedProduct = {
+    _id: _id,
+    name,
+    brand,
+    category,
+    cost,
+    price,
+    discount,
+    qty,
+    description,
+    image,
+  };
+  await ProductModel.findByIdAndUpdate(_id, updatedProduct, { new: true });
+
+  res.json(updatedProduct);
+});

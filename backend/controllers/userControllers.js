@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModels.js";
+import mongoose from "mongoose";
 import generateToken from "../utils/generateToken.js";
 
 // @description     Register New User
@@ -51,6 +52,8 @@ export const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      contact: user.contact,
+      dob: user.dob,
       isAdmin: user.isAdmin,
       photo: user.photo,
       token: generateToken(user._id),
@@ -59,4 +62,17 @@ export const authUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Invalid Email or Password");
   }
+});
+
+// @Description     Update User Profile
+// @route           POST /api/users/update
+// @access          Private
+export const updateUser = asyncHandler(async (req, res) => {
+  const { _id, name, contact, dob, email, photo } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send(`No user with ID ${_id} found.`);
+
+  const updatedInfo = { _id: _id, name, contact, dob, email, photo };
+  await User.findByIdAndUpdate(_id, updatedInfo, { new: true });
+  res.json(updatedInfo);
 });
