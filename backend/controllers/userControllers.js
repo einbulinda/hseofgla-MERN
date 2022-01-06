@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModels.js";
 import mongoose from "mongoose";
 import generateToken from "../utils/generateToken.js";
+import AddressModel from "../models/addressModel.js";
 
 // @description     Register New User
 // @route           POST /api/users/register
@@ -75,4 +76,57 @@ export const updateUser = asyncHandler(async (req, res) => {
   const updatedInfo = { _id: _id, name, contact, dob, email, photo };
   await User.findByIdAndUpdate(_id, updatedInfo, { new: true });
   res.json(updatedInfo);
+});
+
+// Create Delivery Address
+export const createAddress = asyncHandler(async (req, res) => {
+  const {
+    firstName,
+    lastName,
+    phone,
+    county,
+    town,
+    deliveryAddress,
+    uid,
+  } = req.body;
+
+  const newAddress = await AddressModel.create({
+    firstName,
+    lastName,
+    phone,
+    county,
+    town,
+    deliveryAddress,
+    uid,
+  });
+
+  if (newAddress) {
+    res.status(201).json({
+      firstName: newAddress.firstName,
+      lastName: newAddress.lastName,
+      phone: newAddress.phone,
+      county: newAddress.county,
+      town: newAddress.town,
+      deliveryAddress: newAddress.deliveryAddress,
+      uid: newAddress.uid,
+    });
+  } else {
+    res.status(400);
+    throw new Error("An error was encountered in saving the address");
+  }
+});
+
+// @Description     Get User Address
+// @route           GET /api/users/address
+// @access          Private
+export const getAddress = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const address = await AddressModel.find({ uid: id });
+
+    res.status(200).json(address);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 });
