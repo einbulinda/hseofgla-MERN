@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 import { errorHandler, notFound } from "./middlewares/errorMiddleware.js";
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(cors({ credentials: true }));
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/category", categoryRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Error handling middlewares
 app.use(notFound);
