@@ -8,9 +8,10 @@ const orderSchema = mongoose.Schema(
     deliveryMode: String,
     amountDue: Number,
     orderTotal: Number,
-    address: { type: [String], default: [] },
-    products: { type: [String], default: [] },
+    address: { type: Object, default: {} },
+    products: { type: Array, default: [] },
     status: { type: String, default: "Pending" },
+    deliveryDate: { type: Date, default: null },
   },
   {
     timestamps: true,

@@ -3,6 +3,7 @@ import User from "../models/userModels.js";
 import mongoose from "mongoose";
 import generateToken from "../utils/generateToken.js";
 import AddressModel from "../models/addressModel.js";
+import expressAsyncHandler from "express-async-handler";
 
 // @description     Register New User
 // @route           POST /api/users/register
@@ -125,6 +126,18 @@ export const getAddress = asyncHandler(async (req, res) => {
   try {
     const address = await AddressModel.find({ uid: id });
 
+    res.status(200).json(address);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
+// @Description   Get Address By Id
+export const getAddressById = expressAsyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const address = await AddressModel.findById(id);
     res.status(200).json(address);
   } catch (error) {
     res.status(404).json({ message: error.message });

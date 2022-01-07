@@ -3,6 +3,7 @@ import {
   authUser,
   createAddress,
   getAddress,
+  getAddressById,
   registerUser,
   updateUser,
 } from "../controllers/userControllers.js";
@@ -14,5 +15,6 @@ router.post("/login", authUser);
 router.patch("/update", updateUser);
 router.post("/address", createAddress);
 router.get("/address/:id", getAddress);
+router.get("/address-id/:id", getAddressById);
 
 export default router;

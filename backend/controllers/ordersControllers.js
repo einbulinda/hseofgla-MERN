@@ -8,7 +8,10 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
     paymentMode,
     isPaid,
     deliveryMode,
+    deliveryDate,
     amountDue,
+    status,
+    orderTotal,
     address,
     products,
   } = req.body;
@@ -19,7 +22,10 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
     paymentMode,
     isPaid,
     deliveryMode,
+    deliveryDate,
     amountDue,
+    status,
+    orderTotal,
     address,
     products,
   });
@@ -30,9 +36,12 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
       paymentMode: placedOrder.paymentMode,
       isPaid: placedOrder.isPaid,
       deliveryMode: placedOrder.deliveryMode,
+      deliveryDate: placedOrder.deliveryDate,
+      orderTotal: placedOrder.orderTotal,
       amountDue: placedOrder.amountDue,
       address: placedOrder.address,
       products: placedOrder.products,
+      status: placedOrder.status,
     });
   } else {
     res.status(400);
@@ -47,6 +56,18 @@ export const getUserOrders = expressAsyncHandler(async (req, res) => {
   try {
     const orders = await OrderModel.find({ user: id });
     res.status(200).json(orders);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
+// Get Order details
+export const getOrderDetails = expressAsyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const orderDtls = await OrderModel.findById(id);
+    res.send(orderDtls);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
