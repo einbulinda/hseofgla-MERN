@@ -6,6 +6,7 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
   const {
     user,
     paymentMode,
+    amountPaid,
     isPaid,
     deliveryMode,
     deliveryDate,
@@ -20,6 +21,7 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
   const placedOrder = await OrderModel.create({
     user,
     paymentMode,
+    amountPaid,
     isPaid,
     deliveryMode,
     deliveryDate,
@@ -34,6 +36,7 @@ export const createOrder = expressAsyncHandler(async (req, res) => {
     res.status(201).json({
       user: placedOrder.user,
       paymentMode: placedOrder.paymentMode,
+      amountPaid: placedOrder.amountPaid,
       isPaid: placedOrder.isPaid,
       deliveryMode: placedOrder.deliveryMode,
       deliveryDate: placedOrder.deliveryDate,
