@@ -36,8 +36,14 @@ app.use(errorHandler);
 const databaseUrl = process.env.DB_URL;
 const port = process.env.PORT || 5000;
 
-// Connect the DB
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("build"));
+  app.get("*", (req, res) => {
+    req.sendFile(path.resolve(__dirname, "frontend/build", "index.html"));
+  });
+}
 
+// Connect the DB
 mongoose
   .connect(databaseUrl, {
     useNewUrlParser: true,

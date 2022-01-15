@@ -5,8 +5,8 @@
   "description": "House of Glamour App",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "nodemon --watch backend --exec node --experimental-modules backend/server.js",
+    "build": "cd frontend && npm run build",
+    "start": "node app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
